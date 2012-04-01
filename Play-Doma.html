@@ -1,0 +1,328 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Play-Doma Module &mdash; Product Document v2012.04.01 documentation</title>
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2012.04.01',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-dropdown.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-scrollspy.js"></script>
+    <link rel="top" title="Product Document v2012.04.01 documentation" href="index.html" />
+    <link rel="next" title="Play2-Job Module" href="Play2-Job.html" />
+    <link rel="prev" title="Documentation" href="index.html" />
+<script type="text/javascript">
+(function () {
+  /**
+   * Patch TOC list.
+   *
+   * Will mutate the underlying span to have a correct ul for nav.
+   *
+   * @param $span: Span containing nested UL's to mutate.
+   * @param minLevel: Starting level for nested lists. (1: global, 2: local).
+   */
+  var patchToc = function ($span, minLevel) {
+    var $tocList = $("<ul/>").attr('class', "dropdown-menu"),
+      findA;
+
+    // Find all a "internal" tags, traversing recursively.
+    findA = function ($elem, level) {
+      var level = level || 0,
+        $items = $elem.find("> li > a.internal, > ul, > li > ul");
+
+      // Iterate everything in order.
+      $items.each(function (index, item) {
+        var $item = $(item),
+          tag = item.tagName.toLowerCase(),
+          pad = 10 + ((level - minLevel) * 10);
+
+        if (tag === 'a' && level >= minLevel) {
+          // Add to existing padding.
+          $item.css('padding-left', pad + "px");
+          // Add list element.
+          $tocList.append($("<li/>").append($item));
+        } else if (tag === 'ul') {
+          // Recurse.
+          findA($item, level + 1);
+        }
+      });
+    };
+
+    // Start construction and return.
+    findA($span);
+
+    // Wipe out old list and patch in new one.
+    return $span.empty("ul").append($tocList);
+  };
+
+  $(document).ready(function () {
+    // Patch the global and local TOC's to be bootstrap-compliant.
+    patchToc($("span.globaltoc"), 1);
+    patchToc($("span.localtoc"), 2);
+
+    // Activate.
+    $('#topbar').dropdown();
+  });
+}());
+</script>
+
+  </head>
+  <body>
+  <div class="topbar" data-scrollspy="scrollspy" >
+    <div class="topbar-inner">
+      <div class="container">
+        <a class="brand" href="index.html">hina0118&#39;s Deliverables</a>
+        <ul class="nav">
+          
+            <li class="dropdown" data-dropdown="dropdown">
+  <a href="index.html"
+     class="dropdown-toggle">Site</a>
+  <span class="globaltoc"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Play-Doma Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Play2-Job.html">Play2-Job Module</a></li>
+</ul>
+</span>
+</li>
+            <li class="dropdown" data-dropdown="dropdown">
+  <a href="#"
+     class="dropdown-toggle">Page</a>
+  <span class="localtoc"><ul>
+<li><a class="reference internal" href="#">Play-Doma Module</a><ul>
+<li><a class="reference internal" href="#id1">概要</a></li>
+<li><a class="reference internal" href="#id2">モジュールの設定方法</a></li>
+<li><a class="reference internal" href="#eclipse">Eclipseプロジェクトの生成</a></li>
+<li><a class="reference internal" href="#doma">Doma設定クラス</a></li>
+<li><a class="reference internal" href="#controller">Controllerクラス</a><ul>
+<li><a class="reference internal" href="#dao">Daoクラスの生成</a></li>
+<li><a class="reference internal" href="#id3">トランザクション管理</a></li>
+<li><a class="reference internal" href="#id4">リクエストパラメータのバインド</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#apt-generated">.apt_generatedについて</a></li>
+</ul>
+</li>
+</ul>
+</span>
+</li>
+          
+          
+            
+  <li><a href="index.html"
+         title="previous chapter">&laquo; Documentation</a></li>
+  <li><a href="Play2-Job.html"
+         title="next chapter">Play2-Job Module &raquo;</a></li>
+          
+          
+            
+  <li><a href="_sources/Play-Doma.txt"
+         rel="nofollow">Source</a></li>
+          
+        </ul>
+        <ul class="nav secondary-nav">
+          
+            
+<form class="pull-left" action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
+   
+  <div class="section" id="play-doma-module">
+<h1>Play-Doma Module<a class="headerlink" href="#play-doma-module" title="Permalink to this headline">¶</a></h1>
+<hr class="docutils" />
+<div class="section" id="id1">
+<h2>概要<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Play framework 1.x用Domaモジュール。</p>
+<p>使用しているライブラリについては以下のリンクを参照してください。</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.playframework.org/">Play framework 1.2.4</a></li>
+<li><a class="reference external" href="http://doma.seasar.org/">Doma 1.21.1</a></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="id2">
+<h2>モジュールの設定方法<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>１．GitHubからモジュールをcloneします。</p>
+<blockquote>
+<div>git clone git://github.com/hina0118/play-doma.git</div></blockquote>
+<p>２．cloneしたモジュールを <strong>dependencies.yml</strong> に追記します。</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">require</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">play</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">doma -&gt; doma</span>
+
+<span class="l-Scalar-Plain">repositories</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">My modules</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span>       <span class="l-Scalar-Plain">local</span>
+        <span class="l-Scalar-Plain">artifact</span><span class="p-Indicator">:</span>   <span class="l-Scalar-Plain">${application.path}/../../../[module]</span>
+        <span class="l-Scalar-Plain">contains</span><span class="p-Indicator">:</span>
+            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">doma</span>
+</pre></div>
+</div>
+<p>３． <strong>play dependencies</strong> または <strong>play deps</strong> を実行するとモジュールが追加されます。</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="eclipse">
+<h2>Eclipseプロジェクトの生成<a class="headerlink" href="#eclipse" title="Permalink to this headline">¶</a></h2>
+<p><strong>play eclipsify</strong> 、 <strong>play ec</strong> にすぐにDomaを使用するための設定を行う処理を追加しています。</p>
+<p>Play-Domaモジュールを取り込んだ状態でEclipseプロジェクトを生成すると、Eclipseに取り込んですぐにDomaを使用することができます。</p>
+<p>以下の設定が追加された状態でEclipseにプロジェクトを取り込むことができます。</p>
+<ul class="simple">
+<li>aptを使用可能な状態にする</li>
+<li>アプリケーションのlibディレクトリ、モジュールのlibディレクトリの順に探索して先に見つかったDomaのjarをfactorypathentryに設定</li>
+<li>.apt_generatedディレクトリをaptが出力したソースコードの出力先に指定</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="doma">
+<h2>Doma設定クラス<a class="headerlink" href="#doma" title="Permalink to this headline">¶</a></h2>
+<p>Doma設定クラスは以下のように作成します。</p>
+<p>Play frameworkと同じLoggerにログを出力するために <strong>play.modules.doma.PlayLogger</strong> を用意していますので、必要に応じて切り替えてください。</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">javax.sql.DataSource</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.seasar.doma.jdbc.DomaAbstractConfig</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.seasar.doma.jdbc.JdbcLogger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.seasar.doma.jdbc.dialect.Dialect</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.seasar.doma.jdbc.dialect.H2Dialect</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.seasar.doma.jdbc.tx.LocalTransaction</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.seasar.doma.jdbc.tx.LocalTransactionalDataSource</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">play.db.DB</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">play.modules.doma.PlayLogger</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AppConfig</span> <span class="kd">extends</span> <span class="n">DomaAbstractConfig</span> <span class="o">{</span>
+
+    <span class="kd">protected</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">LocalTransactionalDataSource</span> <span class="n">dataSource</span> <span class="o">=</span> <span class="n">createDataSource</span><span class="o">();</span>
+
+    <span class="kd">protected</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Dialect</span> <span class="n">dialect</span> <span class="o">=</span> <span class="k">new</span> <span class="n">H2Dialect</span><span class="o">();</span>
+
+    <span class="kd">protected</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">JdbcLogger</span> <span class="n">jdbcLogger</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PlayLogger</span><span class="o">();</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">DataSource</span> <span class="nf">getDataSource</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">dataSource</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Dialect</span> <span class="nf">getDialect</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">dialect</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">JdbcLogger</span> <span class="nf">getJdbcLogger</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">jdbcLogger</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kd">static</span> <span class="n">LocalTransactionalDataSource</span> <span class="nf">createDataSource</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">LocalTransactionalDataSource</span><span class="o">(</span><span class="n">DB</span><span class="o">.</span><span class="na">datasource</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">LocalTransaction</span> <span class="nf">getLocalTransaction</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">dataSource</span><span class="o">.</span><span class="na">getLocalTransaction</span><span class="o">(</span><span class="n">jdbcLogger</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="controller">
+<h2>Controllerクラス<a class="headerlink" href="#controller" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dao">
+<h3>Daoクラスの生成<a class="headerlink" href="#dao" title="Permalink to this headline">¶</a></h3>
+<p>Daoクラスはnew演算子で実装クラスをインスタンス化することもできますが、以下のように <strong>javax.inject.Inject</strong> アノテーションを注釈するとモジュール側で実装クラスを探しだしてInjectします。</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="nd">@javax.inject.Inject</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">UserDao</span> <span class="n">userDao</span><span class="o">;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Controllerクラスに定義したstaticフィールドに対して有効です。</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>トランザクション管理<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>リクエストの開始、終了、エラー発生時にモジュール側でローカルトランザクションの開始、コミット、ロールバックを制御しています。</p>
+<p>そのため、Controllerクラスでは以下のようにシンプルに記述することができます。</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">index</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="n">userDao</span><span class="o">.</span><span class="na">select</span><span class="o">();</span>
+    <span class="n">render</span><span class="o">(</span><span class="n">users</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>リクエストパラメータのバインド<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>以下のHTMLのようにuser.emailと名前を付けられた部品の入力値をDomaのEntity、Domainに対して直接バインドすることができます。</p>
+<div class="highlight-html"><div class="highlight"><pre>#{form @Application.create()}
+<span class="nt">&lt;label&gt;</span>MAIL:<span class="nt">&lt;/label&gt;&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;user.email&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;label&gt;</span>PASS:<span class="nt">&lt;/label&gt;&lt;input</span> <span class="na">type=</span><span class="s">&quot;password&quot;</span> <span class="na">name=</span><span class="s">&quot;user.password&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;label&gt;</span>NAME:<span class="nt">&lt;/label&gt;&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;user.fullname&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;insert&quot;</span><span class="nt">&gt;</span>
+#{/form}
+</pre></div>
+</div>
+<p>Userクラスが以下のように定義されている場合、</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="nd">@org.seasar.doma.Entity</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+    <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span>         <span class="c1">// IDは自動生成</span>
+    <span class="n">Email</span> <span class="n">email</span><span class="o">;</span>        <span class="c1">// Domainクラス</span>
+    <span class="n">Password</span> <span class="n">password</span><span class="o">;</span>  <span class="c1">// Domainクラス</span>
+    <span class="n">String</span> <span class="n">fullname</span><span class="o">;</span>
+
+    <span class="c1">// setter and getter</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Userクラスには上記HTMLで入力された値が既にバインドされてるのでそのまま使用できます。</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">(</span><span class="n">User</span> <span class="n">user</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">userDao</span><span class="o">.</span><span class="na">insert</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
+    <span class="n">index</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="apt-generated">
+<h2>.apt_generatedについて<a class="headerlink" href="#apt-generated" title="Permalink to this headline">¶</a></h2>
+<p>.apt_generatedディレクトリに出力されるソースコードはアプリケーション実行時に参照されるようになっていますのでリリース時などは他のソースコードと同じように扱う必要があります。</p>
+</div>
+</div>
+
+
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right"><a href="#">Back to top</a></p>
+    <p>
+        &copy; Copyright 2012, hina0118.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
